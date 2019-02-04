@@ -42,10 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Battle.cs" />
+    <Compile Include="Area.cs" />
+    <Compile Include="Singleton\Battle.cs" />
+    <Compile Include="Singleton\Game.cs" />
     <Compile Include="Model\Npc.cs" />
     <Compile Include="Model\Player.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="CommandHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
