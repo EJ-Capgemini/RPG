@@ -20,10 +20,12 @@ namespace Maandag {
         public static Game Instance {
             get {
                 if (instance == null) {
-                    instance = new Game();
-                    instance.CurrentAreaIndex = 0;
-                    instance.Areas = new List<Area>();
-                    instance.Areas.Add(new Area("Starting area"));
+                    instance = new Game {
+                        CurrentAreaIndex = 0,
+                        Areas = new List<Area> {
+                        new Area("Starting area") //dummy test area
+                    }
+                    };
                 }
                 return instance;
             }
@@ -37,21 +39,14 @@ namespace Maandag {
             CurrentBattle = foes.Count > 0 ? new Battle(CurrentPlayer, foes) : null;
 
             return CurrentBattle;
-        }
-
-        //Deze 2 verder uitwerken!
-        public void FightBattle(Battle battle) {
-            Random rnd = new Random();
-            int healthLost = rnd.Next(3, 5 + 1);
-
-            CurrentPlayer.CurrentHealth -= healthLost;
-        }
-
-        public void FleeFromBattle(Battle battle) {
-            Random rnd = new Random();
-            int healthLost = rnd.Next(3, 5 + 1);
-
-            CurrentPlayer.CurrentHealth -= healthLost;
+        }    
+        
+        public void LevelUp() {
+            CurrentPlayer.Level++;
+            CurrentPlayer.Accuracy++;
+            CurrentPlayer.CurrentHealth++;
+            CurrentPlayer.MaxHealth++;
+            Console.WriteLine("Congratulations, {0} has reached level {1}!", CurrentPlayer.DisplayName, CurrentPlayer.Level);
         }
     }
 }

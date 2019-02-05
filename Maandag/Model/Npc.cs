@@ -5,20 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Maandag.Model {
-    class Npc {
+    class Npc:Fightable {
         private Boolean attackable;
-        private int health;
-        private float accuracy;
-        private int maxDamage;
-        private string name;
-
-        public Npc(bool attackable, int health, float accuracy, int maxDamage, string name) {
+              
+        public Npc(bool attackable, int health, int accuracy, int maxDamage, string name) {
             this.attackable = attackable;
-            this.health = health;
+            maxHealth = health;
+            currentHealth = maxHealth;
             this.accuracy = accuracy;
             this.maxDamage = maxDamage;
-            this.name = name ?? throw new ArgumentNullException(nameof(name));
+            this.name = name;
         }
+
+        public Npc Clone() { return (Npc)this.MemberwiseClone(); }
 
         public string Name {
             get { return name; }
@@ -30,14 +29,19 @@ namespace Maandag.Model {
             set { maxDamage = value; }
         }
 
-        public float Accuracy {
+        public int Accuracy {
             get { return accuracy; }
             set { accuracy = value; }
         }
 
-        public int Health {
-            get { return health; }
-            set { health = value; }
+        public int MaxHealth {
+            get { return maxHealth; }
+            set { maxHealth = value; }
+        }
+
+        public int CurrentHealth {
+            get { return currentHealth; }
+            set { currentHealth = value; }
         }
 
         public Boolean Attackable {

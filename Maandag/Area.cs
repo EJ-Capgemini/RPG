@@ -24,9 +24,9 @@ namespace Maandag {
         private List<Npc> GetDummyData() {
             List<Npc> npcs = new List<Npc>();
 
-            npcs.Add(new Npc(true, 5, 20.0f, 1, "Chicken"));
-            npcs.Add(new Npc(false, 1_000, 100.0f, 50, "Bartender"));
-            npcs.Add(new Npc(true, 10, 30.0f, 2, "Goblin"));
+            npcs.Add(new Npc(true, 5, 40, 1, "Chicken"));
+            npcs.Add(new Npc(false, 1_000, 100, 50, "Bartender"));
+            npcs.Add(new Npc(true, 10, 60, 2, "Goblin"));
 
             return npcs;
         }

@@ -5,26 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Maandag.Model {
-    class Player {
-        private readonly string email;
-        private readonly string password;
-        private readonly string displayName;
+    class Player : Fightable {
+        readonly int BASE_HEALTH = 10;
+        readonly int BASE_ACCURACY = 80;
+        readonly int BASE_MAX_DAMAGE = 3;
 
-        private int currentHealth;
-        private int maxHealth = 10;
-        private float accuracy = 80.0f;
-        private int maxDamage = 3;
-
-        public Player(string email, string password, string displayName) {
-            this.email = email;
-            this.password = password;
-            this.displayName = displayName;
-            currentHealth = maxHealth;
-        }
+        public int Level { get; set; } = 1;
 
         public Player(string displayName) {
-            this.displayName = displayName;
+            this.name = displayName;
+            maxHealth = BASE_HEALTH;
             currentHealth = maxHealth;
+            accuracy = BASE_ACCURACY;
+            maxDamage = BASE_MAX_DAMAGE;
         }
 
         public int MaxHealth {
@@ -37,7 +30,7 @@ namespace Maandag.Model {
             set { currentHealth = value; }
         }
 
-        public float Accuracy {
+        public int Accuracy {
             get { return accuracy; }
             set { accuracy = value; }
         }
@@ -48,7 +41,7 @@ namespace Maandag.Model {
         }
 
         public string DisplayName {
-            get { return displayName; }
+            get { return name; }
         }
     }
 }

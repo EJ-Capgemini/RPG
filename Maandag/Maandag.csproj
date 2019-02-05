@@ -43,6 +43,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Area.cs" />
+    <Compile Include="IFightable.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="RandomUtil.cs" />
     <Compile Include="Singleton\Battle.cs" />
     <Compile Include="Singleton\Game.cs" />
     <Compile Include="Model\Npc.cs" />
