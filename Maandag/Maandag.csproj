@@ -42,12 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Area.cs" />
+    <Compile Include="Model\Area.cs" />
     <Compile Include="IFightable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="RandomUtil.cs" />
-    <Compile Include="Singleton\Battle.cs" />
-    <Compile Include="Singleton\Game.cs" />
+    <Compile Include="Model\Battle.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="Model\Npc.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="CommandHandler.cs" />
@@ -56,5 +56,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
