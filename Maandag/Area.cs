@@ -14,21 +14,5 @@ namespace Maandag {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Npcs = npcs ?? throw new ArgumentNullException(nameof(npcs));
         }
-
-        public Area(string name) {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-            //Vullen met testdata
-            Npcs = GetDummyData();
-        }
-
-        private List<Npc> GetDummyData() {
-            List<Npc> npcs = new List<Npc>();
-
-            npcs.Add(new Npc(true, 5, 40, 1, "Chicken"));
-            npcs.Add(new Npc(false, 1_000, 100, 50, "Bartender"));
-            npcs.Add(new Npc(true, 10, 60, 2, "Goblin"));
-
-            return npcs;
-        }
     }
 }

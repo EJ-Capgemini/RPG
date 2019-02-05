@@ -51,6 +51,8 @@ namespace Maandag {
             switch (input.ToLower()) {
                 case "!create":
                     if (Game.Instance.CurrentPlayer == null) {
+                        Game.Instance.CurrentBattle = null;
+                        Game.Instance.Active = false;
                         Console.WriteLine("### Creating a new account ### ");
                         Console.WriteLine("Display Name (What other players will see): ");
                         string displayName = Console.ReadLine();
@@ -62,6 +64,7 @@ namespace Maandag {
                     break;
                 case "!play":
                     if(Game.Instance.CurrentPlayer != null) {
+                        Game.Instance.CurrentBattle = null;
                         Game.Instance.Active = true;
                         Console.WriteLine("### Game started ###");
                         Console.WriteLine("{0} is currently standing in \"{1}\" with {2}/{3} health remaining.",
@@ -86,56 +89,66 @@ namespace Maandag {
                     }
                     break;
                 case "!battle":
-                    if (Game.Instance.CurrentPlayer != null) {
+                    if (Game.Instance.CurrentPlayer != null && Game.Instance.Active) {
                         Console.WriteLine("### BATTLE ###");
                         Game.Instance.CurrentBattle = Game.Instance.RandomEncounter();
                         if (Game.Instance.CurrentBattle != null) {
                             Console.WriteLine("Foes encountered consisting of the following npc's: {0}", Game.Instance.CurrentBattle.ToString());
                             Console.WriteLine("You have {0} health. Fight or run? (!fight or !run)", Game.Instance.CurrentPlayer.CurrentHealth);
-                            string answer;
-                            do {
-                                answer = Console.ReadLine();
-                                var answerLower = answer?.ToLower();
-                                if ((answerLower == "!fight") || (answerLower == "!run"))
-                                    if (answer == "!fight") {
-                                        Game.Instance.CurrentBattle.Fight();
-                                        if (Game.Instance.CurrentPlayer != null && Game.Instance.CurrentPlayer.CurrentHealth > 0) {
-                                            Console.WriteLine("You are victorious!");
-                                            Console.WriteLine("Remaining health: {0}/{1}", Game.Instance.CurrentPlayer.CurrentHealth,
-                                                Game.Instance.CurrentPlayer.MaxHealth);
-                                        } else {
-                                            Console.WriteLine("You died..");
-                                            PlayerDied();
-                                        }
-                                    } else if (answer == "!run") {
-                                        int damageTaken = Game.Instance.CurrentBattle.Flee();
-                                        if (Game.Instance.CurrentPlayer.CurrentHealth > 0) {
-                                            Console.WriteLine("You managed to escape, taking {0} damage", damageTaken);
-                                            Console.WriteLine("Remaining health: {0}/{1}", Game.Instance.CurrentPlayer.CurrentHealth,
-                                                Game.Instance.CurrentPlayer.MaxHealth);
-                                        } else {
-                                            Console.WriteLine("Whilst trying to escape you were dealt {0} damage, which was is " +
-                                                "enough to kill you.", damageTaken);
-                                            PlayerDied();
-                                        }
-                                    }
-                                break;
-                            } while (true);
+                            AskAndHandleInput();
                         } else {
                             Console.WriteLine("There are no foes in this area.");
                         }
-                    } else {
+                    } else if(Game.Instance.CurrentPlayer == null) {
                         Console.WriteLine("No character found (dead ones don't count..). Type !create to make one.");
+                    } else if (!Game.Instance.Active) {
+                        Console.WriteLine("No active game found. Type !play to begin.");
                     }
                     break;
                 case "!fight":
-                case "!run":
-                    if (Game.Instance.Active) {
+                    if (Game.Instance.CurrentBattle != null) {
+                        Game.Instance.CurrentBattle.Fight();
+                        if (Game.Instance.CurrentPlayer != null && Game.Instance.CurrentPlayer.CurrentHealth > 0) {
+                            Console.WriteLine("You are victorious!");
+                            Console.WriteLine("Remaining health: {0}/{1}", Game.Instance.CurrentPlayer.CurrentHealth,
+                                Game.Instance.CurrentPlayer.MaxHealth);
+                        } else {
+                            Console.WriteLine("You died..");
+                            PlayerDied();
+                        }
+                    } else if (Game.Instance.Active) {
                         Console.WriteLine("You are not in a battle. There's no need to fight or run!");
                     } else {
                         Console.WriteLine("No active game found. Type !play to start.");
                     }
-                    break;                
+                    break;
+                case "!run":
+                    if (Game.Instance.CurrentBattle != null) {
+                        int damageTaken = Game.Instance.CurrentBattle.Flee();
+                        if (Game.Instance.CurrentPlayer.CurrentHealth > 0) {
+                            Console.WriteLine("You managed to escape, taking {0} damage", damageTaken);
+                            Console.WriteLine("Remaining health: {0}/{1}", Game.Instance.CurrentPlayer.CurrentHealth,
+                                Game.Instance.CurrentPlayer.MaxHealth);
+                        } else {
+                            Console.WriteLine("Whilst trying to escape you were dealt {0} damage, which was is " +
+                                "enough to kill you.", damageTaken);
+                            PlayerDied();
+                        }
+                    } else if (Game.Instance.Active) {
+                        Console.WriteLine("You are not in a battle. There's no need to fight or run!");
+                    } else {
+                        Console.WriteLine("No active game found. Type !play to start.");
+                    }
+                    break;
+                case "!stats":
+                    if(Game.Instance.CurrentPlayer != null) {
+                        Console.WriteLine("Level: {0}   | Health: {1}/{2}   | Maximum Damage: {3}   | Accuracy: {4}%",
+                            Game.Instance.CurrentPlayer.Level, Game.Instance.CurrentPlayer.CurrentHealth, Game.Instance.CurrentPlayer.MaxHealth,
+                            Game.Instance.CurrentPlayer.MaxDamage, Game.Instance.CurrentPlayer.Accuracy);
+                    } else {
+                        Console.WriteLine("No character found (dead ones don't count..). Type !create to make one.");
+                    }
+                    break;
                 default:
                     Console.WriteLine("Command not found. Please try again.");
                     break;
@@ -152,6 +165,7 @@ namespace Maandag {
 !fight      => fight the encoutered battle.
 !run        => flee from the encountered battle.
 !commands   => See a list of all available commands.
+!stats      => See current statistics of your character.
             ";
 
             return list;

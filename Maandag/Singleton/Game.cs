@@ -23,7 +23,7 @@ namespace Maandag {
                     instance = new Game {
                         CurrentAreaIndex = 0,
                         Areas = new List<Area> {
-                        new Area("Starting area") //dummy test area
+                        new Area("Starting area", instance.GetDummyData())
                     }
                     };
                 }
@@ -47,6 +47,18 @@ namespace Maandag {
             CurrentPlayer.CurrentHealth++;
             CurrentPlayer.MaxHealth++;
             Console.WriteLine("Congratulations, {0} has reached level {1}!", CurrentPlayer.DisplayName, CurrentPlayer.Level);
+        }
+
+        private List<Npc> GetDummyData() {
+            List<Npc> npcs = new List<Npc> {
+                new Npc(true, 5, 30, 1, "Chicken"),
+                new Npc(false, 1_000, 100, 50, "Bartender"),
+                new Npc(true, 10, 50, 2, "Goblin"),
+                new Npc(true, 5, 20, 2, "Rat"),
+                new Npc(true, 10, 10, 8, "Ogre")
+            };
+
+            return npcs;
         }
     }
 }
