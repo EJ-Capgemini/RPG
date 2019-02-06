@@ -176,6 +176,10 @@ namespace Maandag {
                         Console.WriteLine(@" -   {0}", file);
                     }
                     break;
+                case "!reset":
+                    Game.Instance.Reset();
+                    Console.WriteLine("Game has been reset.");
+                    break;
                 case "!exit":
                     Environment.Exit(1);
                     break;
@@ -189,17 +193,18 @@ namespace Maandag {
         string GetCommandList() {
             string list = @"
 ### Available commands ###
-!create     => create a new account.
-!play       => start your adventure.
-!battle     => look for a battle.
-!fight      => fight the encoutered battle.
-!run        => flee from the encountered battle.
-!commands   => See a list of all available commands.
-!stats      => See current statistics of your character.
-!save       => Save your progress. IMPORTANT: Overwrites previous progress!
-!files      => See a list of existing files you can load.
-!load       => Load from save file.
-!exit       => Exit the application.
+!create             => create a new account.
+!play               => start your adventure.
+!battle             => look for a battle.
+!fight              => fight the encountered battle.
+!run                => flee from the encountered battle.
+!commands           => See a list of all available commands.
+!stats              => See current statistics of your character.
+!files              => See a list of existing files you can load.
+!save <filename>    => Save your progress.
+!load <filename>    => Load from save file.
+!reset              => Reset game.
+!exit               => Exit the application.
             ";
 
             return list;

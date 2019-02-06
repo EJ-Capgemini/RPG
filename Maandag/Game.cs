@@ -79,5 +79,9 @@ namespace Maandag {
                 return false;
             }
         }
+
+        public void Reset() {
+            instance = null;
+        }
     }
 }

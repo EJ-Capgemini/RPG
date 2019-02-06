@@ -24,29 +24,34 @@ namespace Maandag {
         }
 
         public Boolean Save(List<String> parameters = null) {
-            string filename = DEFAULT_FILE;
+            if (Game.Instance.CurrentPlayer != null) {
+                string filename = DEFAULT_FILE;
 
-            if (parameters != null) {
-                filename = parameters[0];
-                if (!filename.EndsWith(".txt")) {
-                    filename += ".txt";
+                if (parameters != null) {
+                    filename = parameters[0];
+                    if (!filename.EndsWith(".txt")) {
+                        filename += ".txt";
+                    }
                 }
-            }
 
-            JsonSerializer serializer = new JsonSerializer();
+                JsonSerializer serializer = new JsonSerializer();
 
-            try {
-                using (StreamWriter sw = new StreamWriter(LOAD_FILE_PATH + filename))
-                using (JsonWriter writer = new JsonTextWriter(sw)) {
-                    serializer.Serialize(writer, instance);
+                try {
+                    using (StreamWriter sw = new StreamWriter(LOAD_FILE_PATH + filename))
+                    using (JsonWriter writer = new JsonTextWriter(sw)) {
+                        serializer.Serialize(writer, Game.Instance);
+                    }
+                } catch (Exception ex) {
+                    Console.WriteLine("Error:" + ex.Message);
+                    return false;
                 }
+
                 Console.WriteLine("Current progress has been succesfully saved to file {0}", filename);
-            } catch (Exception ex) {
-                Console.WriteLine("Error:" + ex.Message);
+                return true;
+            } else {
+                Console.WriteLine("There is no player to save! Did you just die?");
                 return false;
             }
-
-            return true;
         }
 
         public Game Load(List<String> parameters = null) {
