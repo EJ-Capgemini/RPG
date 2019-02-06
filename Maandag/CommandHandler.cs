@@ -27,17 +27,17 @@ namespace Maandag {
             //Thread.Sleep(1500); //spannend...
             Console.WriteLine(@"
             
-            ▓█████▄  ██▓ ███▄    █   ██████ ▓█████▄  ▄▄▄        ▄████ 
-            ▒██▀ ██▌▓██▒ ██ ▀█   █ ▒██    ▒ ▒██▀ ██▌▒████▄     ██▒ ▀█▒
-            ░██   █▌▒██▒▓██  ▀█ ██▒░ ▓██▄   ░██   █▌▒██  ▀█▄  ▒██░▄▄▄░
-            ░▓█▄   ▌░██░▓██▒  ▐▌██▒  ▒   ██▒░▓█▄   ▌░██▄▄▄▄██ ░▓█  ██▓
-            ░▒████▓ ░██░▒██░   ▓██░▒██████▒▒░▒████▓  ▓█   ▓██▒░▒▓███▀▒
-             ▒▒▓  ▒ ░▓  ░ ▒░   ▒ ▒ ▒ ▒▓▒ ▒ ░ ▒▒▓  ▒  ▒▒   ▓▒█░ ░▒   ▒ 
-             ░ ▒  ▒  ▒ ░░ ░░   ░ ▒░░ ░▒  ░ ░ ░ ▒  ▒   ▒   ▒▒ ░  ░   ░ 
-             ░ ░  ░  ▒ ░   ░   ░ ░ ░  ░  ░   ░ ░  ░   ░   ▒   ░ ░   ░ 
-               ░     ░           ░       ░     ░          ░  ░      ░ 
-             ░                               ░                        
-                      
+             █     █░ ▒█████  ▓█████  ███▄    █   ██████ ▓█████▄  ▄▄▄        ▄████ 
+            ▓█░ █ ░█░▒██▒  ██▒▓█   ▀  ██ ▀█   █ ▒██    ▒ ▒██▀ ██▌▒████▄     ██▒ ▀█▒
+            ▒█░ █ ░█ ▒██░  ██▒▒███   ▓██  ▀█ ██▒░ ▓██▄   ░██   █▌▒██  ▀█▄  ▒██░▄▄▄░
+            ░█░ █ ░█ ▒██   ██░▒▓█  ▄ ▓██▒  ▐▌██▒  ▒   ██▒░▓█▄   ▌░██▄▄▄▄██ ░▓█  ██▓
+            ░░██▒██▓ ░ ████▓▒░░▒████▒▒██░   ▓██░▒██████▒▒░▒████▓  ▓█   ▓██▒░▒▓███▀▒
+            ░ ▓░▒ ▒  ░ ▒░▒░▒░ ░░ ▒░ ░░ ▒░   ▒ ▒ ▒ ▒▓▒ ▒ ░ ▒▒▓  ▒  ▒▒   ▓▒█░ ░▒   ▒ 
+              ▒ ░ ░    ░ ▒ ▒░  ░ ░  ░░ ░░   ░ ▒░░ ░▒  ░ ░ ░ ▒  ▒   ▒   ▒▒ ░  ░   ░ 
+              ░   ░  ░ ░ ░ ▒     ░      ░   ░ ░ ░  ░  ░   ░ ░  ░   ░   ▒   ░ ░   ░ 
+                ░        ░ ░     ░  ░         ░       ░     ░          ░  ░      ░ 
+                                                          ░                        
+       
             ");
             //Thread.Sleep(500);
             Console.WriteLine("Type !commands to see the full list of commands. Good luck and have fun.");
@@ -72,7 +72,7 @@ namespace Maandag {
                             Game.Instance.Areas[Game.Instance.CurrentAreaIndex].Name,
                             Game.Instance.CurrentPlayer.CurrentHealth,
                             Game.Instance.CurrentPlayer.MaxHealth
-                            );
+                        );
                     } else {
                         Console.WriteLine("Useraccount not found. Please create one first.");
                     }
@@ -142,12 +142,26 @@ namespace Maandag {
                     break;
                 case "!stats":
                     if(Game.Instance.CurrentPlayer != null) {
-                        Console.WriteLine("Level: {0}   | Health: {1}/{2}   | Maximum Damage: {3}   | Accuracy: {4}%",
-                            Game.Instance.CurrentPlayer.Level, Game.Instance.CurrentPlayer.CurrentHealth, Game.Instance.CurrentPlayer.MaxHealth,
-                            Game.Instance.CurrentPlayer.MaxDamage, Game.Instance.CurrentPlayer.Accuracy);
+                        Console.WriteLine("Name: {0}    | Level: {1}   | Health: {2}/{3}   | Maximum Damage: {4}   | Accuracy: {5}%",
+                            Game.Instance.CurrentPlayer.DisplayName, Game.Instance.CurrentPlayer.Level, Game.Instance.CurrentPlayer.CurrentHealth, 
+                            Game.Instance.CurrentPlayer.MaxHealth, Game.Instance.CurrentPlayer.MaxDamage, Game.Instance.CurrentPlayer.Accuracy);
                     } else {
                         Console.WriteLine("No character found (dead ones don't count..). Type !create to make one.");
                     }
+                    break;
+                case "!save":
+                    if (Game.Instance.Save()) {
+                        Console.WriteLine("Your progress has been saved");
+                    }
+                    break;
+                case "!load":
+                    if (Game.Instance.Load()) {
+                        Console.WriteLine("Loading from file succeeded");
+                        AskAndHandleInput("!stats");
+                    }
+                    break;
+                case "!exit":
+                    Environment.Exit(1);
                     break;
                 default:
                     Console.WriteLine("Command not found. Please try again.");
@@ -166,6 +180,9 @@ namespace Maandag {
 !run        => flee from the encountered battle.
 !commands   => See a list of all available commands.
 !stats      => See current statistics of your character.
+!save       => Save your progress. IMPORTANT: Overwrites previous progress!
+!load       => Load from save file.
+!exit       => Exit the application.
             ";
 
             return list;

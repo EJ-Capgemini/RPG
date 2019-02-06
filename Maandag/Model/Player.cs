@@ -8,7 +8,7 @@ namespace Maandag.Model {
     class Player : Fightable {
         readonly int BASE_HEALTH = 10;
         readonly int BASE_ACCURACY = 80;
-        readonly int BASE_MAX_DAMAGE = 3;
+        readonly int BASE_MAX_DAMAGE = 4;
 
         public int Level { get; set; } = 1;
 

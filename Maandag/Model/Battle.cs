@@ -12,8 +12,8 @@ namespace Maandag {
 
         private static int MAX_FOES = 3;
 
-        public Battle(Player player, List<Npc> foes) {
-            this.player = player;
+        public Battle(List<Npc> foes) {
+            this.player = Game.Instance.CurrentPlayer;
             this.foes = RandomFoes(foes);
         }
 
@@ -86,7 +86,7 @@ namespace Maandag {
         //Return getal dat van target health af gaat.
         public int Flee() {
             int combinedDamage = Foes.Sum(foe => foe.MaxDamage);
-            int healthLost = RandomUtil.Instance.GetRandomNumber(0, combinedDamage + 1);
+            int healthLost = RandomUtil.Instance.GetRandomNumber(0, combinedDamage - foes.Count + 1);
 
             CurrentPlayer.TakeDamage(healthLost);
 
