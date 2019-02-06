@@ -17,9 +17,7 @@ namespace Maandag {
         public Battle CurrentBattle { get; set; }
         public Boolean Active { get; set; } = false;
         public int PlayTime { get; set; } = 0;
-
-        private static string LOAD_FILE_PATH = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory())) + @"\save_files\";
-
+               
         private Game() { }
 
         public static Game Instance {
@@ -68,35 +66,18 @@ namespace Maandag {
             return npcs;
         }
 
-        public Boolean Save(string filename = null) {            
-            if (filename == null) {
-                filename = "1";
-            }
-
-
-            JsonSerializer serializer = new JsonSerializer();
-
-            using (StreamWriter sw = new StreamWriter(LOAD_FILE_PATH + filename + ".txt"))
-            using (JsonWriter writer = new JsonTextWriter(sw)) {
-                serializer.Serialize(writer, instance);
-            }
-
-            return true;
+        public Boolean Save(List<String> parameters = null) {
+            return FileManager.Instance.Save(parameters);
         }
 
-        public Boolean Load(string filename = null) {
-            if (filename == null) {
-                filename = "1";
-            }
-
-            using (StreamReader r = new StreamReader(LOAD_FILE_PATH + filename + ".txt")) {
-                string json = r.ReadToEnd();
-                Game loadedGame = JsonConvert.DeserializeObject<Game>(json);
-                //Console.WriteLine("Test: " + loadedGame.CurrentPlayer.DisplayName);
+        public Boolean Load(List<String> parameters = null) {
+            Game loadedGame = FileManager.Instance.Load(parameters);
+            if(loadedGame != null) {
                 instance = loadedGame;
+                return true;
+            } else {
+                return false;
             }
-
-            return true;
         }
     }
 }

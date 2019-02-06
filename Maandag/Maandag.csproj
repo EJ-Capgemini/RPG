@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileManager.cs" />
     <Compile Include="Model\Area.cs" />
     <Compile Include="IFightable.cs" />
     <Compile Include="Program.cs" />

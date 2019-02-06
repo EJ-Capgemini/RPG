@@ -1,5 +1,8 @@
 using Maandag.Model;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace Maandag {
@@ -47,7 +50,16 @@ namespace Maandag {
             if(input == null) {
                 input = Console.ReadLine();
             }
-            
+
+            //Dit oogt omslachtig... maar werkt wel.
+            input = Regex.Replace(input, @"\s+", " "); //meerdere spaties achter elkaar, tabs etc vervangen door 1 spatie
+            List<String> extraParameters = input.Split(' ').ToList(); //op spatie splitsen naar lijst
+            input = extraParameters[0];
+            extraParameters.RemoveAt(0);
+            if(extraParameters.Count == 0) {
+                extraParameters = null;
+            }
+
             switch (input.ToLower()) {
                 case "!create":
                     if (Game.Instance.CurrentPlayer == null) {
@@ -150,14 +162,18 @@ namespace Maandag {
                     }
                     break;
                 case "!save":
-                    if (Game.Instance.Save()) {
-                        Console.WriteLine("Your progress has been saved");
-                    }
+                    Game.Instance.Save(extraParameters);
                     break;
                 case "!load":
-                    if (Game.Instance.Load()) {
-                        Console.WriteLine("Loading from file succeeded");
+                    if (Game.Instance.Load(extraParameters)) {
                         AskAndHandleInput("!stats");
+                    }
+                    break;
+                case "!files":
+                    List<string> files = FileManager.Instance.getSaveFiles();
+                    Console.WriteLine("List of files found. Use !load <filename> to load one.");
+                    foreach(string file in files) {
+                        Console.WriteLine(@" -   {0}", file);
                     }
                     break;
                 case "!exit":
@@ -181,6 +197,7 @@ namespace Maandag {
 !commands   => See a list of all available commands.
 !stats      => See current statistics of your character.
 !save       => Save your progress. IMPORTANT: Overwrites previous progress!
+!files      => See a list of existing files you can load.
 !load       => Load from save file.
 !exit       => Exit the application.
             ";
